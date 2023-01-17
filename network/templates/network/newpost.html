@@ -5,14 +5,17 @@
 {% block body %}
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-12">
-            {{ new_post_form }}
-        </div>
-    </div>
-    <div class="row justify-content-end">
-        <div class="col-auto">
-            <button class="btn btn-primary">Submit</button>
-        </div>
+        <form class="form-control border border-0" method="POST">
+            <div class="col-12">
+                {% csrf_token %}
+                {{ new_post_form }}
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-auto">
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}
