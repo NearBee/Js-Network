@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from .models import User
+from .forms import new_post_form
 
 
 def index(request):
@@ -24,9 +25,11 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "network/login.html", {
-                "message": "Invalid username and/or password."
-            })
+            return render(
+                request,
+                "network/login.html",
+                {"message": "Invalid username and/or password."},
+            )
     else:
         return render(request, "network/login.html")
 
@@ -45,19 +48,25 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
-            return render(request, "network/register.html", {
-                "message": "Passwords must match."
-            })
+            return render(
+                request, "network/register.html", {"message": "Passwords must match."}
+            )
 
         # Attempt to create new user
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
-            return render(request, "network/register.html", {
-                "message": "Username already taken."
-            })
+            return render(
+                request, "network/register.html", {"message": "Username already taken."}
+            )
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def new_post(request):
+    # if request.method == "POST":
+    #     post_forms = new_post_form(request.POST)
+    return render(request, "network/newpost.html", {"new_post_form": new_post_form})
