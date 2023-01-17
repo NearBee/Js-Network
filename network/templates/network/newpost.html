@@ -1,0 +1,18 @@
+{% extends "network/layout.html" %}
+
+{% block title %}New Post{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            {{ new_post_form }}
+        </div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
