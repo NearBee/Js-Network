@@ -8,6 +8,9 @@ class User(AbstractUser):
         blank=True,
     )
 
+    def __str__(self):
+        return self.username
+
 
 # Class for New Form (possibly add mmore models or less models not sure yet)
 class New_Post(models.Model):
