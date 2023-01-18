@@ -3,7 +3,10 @@ from django.db import models
 
 
 class User(AbstractUser):
-    pass
+    timezone = models.CharField(
+        max_length=255,
+        blank=True,
+    )
 
 
 # Class for New Form (possibly add mmore models or less models not sure yet)
@@ -15,4 +18,7 @@ class New_Post(models.Model):
     )
     likes = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="like", blank=True, null=True
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
     )
