@@ -95,3 +95,11 @@ def new_post(request):
             post_forms = new_post_form()
             return redirect("index")
     return render(request, "network/newpost.html", {"new_post_form": new_post_form})
+
+
+@login_required(redirect_field_name="", login_url="login")
+def profile_view(request, username):
+    user = request.user
+    if user.username != username:
+        return redirect("index")
+    return render(request, "network/profile.html")
