@@ -1,0 +1,27 @@
+{% extends "network/layout.html" %}
+
+
+{% if user.is_authenticated %}
+
+{% block title %}{{ user.username }}'s Profile{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-auto">
+            <p>Welcome to {{ user.username }}'s Profile!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% else %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-auto">
+            You shouldn't be here....
+        </div>
+    </div>
+</div>
+
+{% endif %}
