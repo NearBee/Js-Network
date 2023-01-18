@@ -1,5 +1,6 @@
 {% extends "network/layout.html" %}
 {% load static %}
+{% load tz %}
 
 {% block body %}
 <div class="container">
@@ -26,7 +27,15 @@
                     <button class="btn btn-link">Edit</button>
                     {% endif %}
 
-                    <small class="text-muted">Time Created: 00:00</small> <!-- Need to used "CREATED AT" here-->
+                    {% if user.timezone %}
+
+                    {% timezone user.timezone %}
+                    <sub class="col-2">{{ post.created_at }}</sub>
+                    {% endtimezone %}
+
+                    {% else %}
+                    <sub class="col-2">{{ post.created_at }}</sub>
+                    {% endif %} <!-- Need to used "CREATED AT" here-->
                 </div>
             </div>
 
