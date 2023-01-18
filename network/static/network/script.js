@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector('#likeButton').addEventListener('click', () => {
-        like_button();
-        console.log("boom");
-    });
+    const likeButtons = document.querySelectorAll('#likeButton');
+    for (let button of likeButtons) {
+        button.addEventListener('click', like_button);
+    }
 });
 
 function like_button() {
-    // May have to use fetch(), which would require making an mock API request 
     alert("I've been clicked!")
 }
+// May have to use fetch(), which would require making an mock API request 
