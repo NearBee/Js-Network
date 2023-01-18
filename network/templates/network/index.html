@@ -1,13 +1,43 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
 <div class="container">
-    <div class="row">
-        <div class="col">
+    <div class="row justify-content-center">
+        <div class="col-7">
             {% for post in posts %}
-            <ul>{{ post.user }}: {{ post.comment_field }}</ul>
+
+            <div class="card">
+                <!-- Add some sort of profile elements in header AFTER profile creation -->
+                <h5 class="card-header">{{ post.user }}</h5>
+                <div class="card-body">
+                    <p class="card-text">{{ post.comment_field }}</p>
+
+                    <button id="likeButton" class="btn btn-link">Like</button>
+
+                    <small class="text-muted">Current likes: 0</small>
+                    <!-- Can be further improved when like function is finished-->
+
+                    {% if request.user != post.user %}
+                    <button class="btn btn-link">Follow</button>
+                    {% endif %}
+
+                    {% if request.user == post.user %}
+                    <button class="btn btn-link">Edit</button>
+                    {% endif %}
+
+                    <small class="text-muted">Time Created: 00:00</small> <!-- Need to used "CREATED AT" here-->
+                </div>
+            </div>
+
+            <!-- <ul>{{ post.user }}: {{ post.comment_field }}</ul> -->
             {% endfor %}
         </div>
     </div>
 </div>
+
+{% block script %}
+<script src="{% static 'network/script.js' %}"></script>
+{% endblock %}
+
 {% endblock %}
