@@ -9,7 +9,7 @@ class new_post_form(forms.ModelForm):
     class Meta:
         model = New_Post
         field = "__all__"
-        exclude = ["user"]  # TODO: also add post_id here when that is made
+        exclude = ["user", "likes"]  # TODO: also add post_id here when that is made
         widgets = {
             "comment_field": Textarea(
                 attrs={
