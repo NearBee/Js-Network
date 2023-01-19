@@ -5,20 +5,26 @@
 
 {% if user.is_authenticated %}
 
-{% block title %}{{ user.username }}'s Profile{% endblock %}
+{% block title %}{{ username }}'s Profile{% endblock %}
 
 {% block body %}
 <div class="container">
     <div class="row justify-content-center text-center my-5">
         <div class="col-auto text-center">
-            Welcome to {{ user.username }}'s Profile!
+            Welcome to {{ username }}'s Profile!
         </div>
         <div class="col-auto">
             Followers: (Follower count will be here after implementation)
         </div>
+
+        <!-- Only shows up if the authenticated user is not the profile owner -->
+        {% if user.username != username %}
         <div class="col-auto">
-            <button class="btn btn-outline-primary btn-sm">Follow!</button>
+            <button id="followButton" class="btn btn-outline-primary btn-sm">Follow!</button>
         </div>
+        {% endif %}
+
+
     </div>
     <div class="row justify-content-center">
         <div class="col-7">
@@ -28,29 +34,42 @@
                 <h5 class="card-header">{{ post.user }}</h5>
                 <div class="card-body">
                     <p class="card-text">{{ post }}</p>
+                    <div class="row">
+                        <div class="col-2">
+                            <button id="likeButton" class="btn btn-link">Like</button>
+                        </div>
 
-                    <button id="likeButton" class="btn btn-link">Like</button>
+                        <div class="col-3">
+                            <small class="text-muted">Current likes: 0</small>
+                        </div>
+                        <!-- Can be further improved when like function is finished-->
 
-                    <small class="text-muted">Current likes: 0</small>
-                    <!-- Can be further improved when like function is finished-->
+                        {% if request.user != user %}
+                        <div class="col-2">
+                            <button class="btn btn-link">Follow</button>
+                        </div>
+                        {% endif %}
 
-                    {% if request.user != post.user %}
-                    <button class="btn btn-link">Follow</button>
-                    {% endif %}
+                        {% if user.timezone %}
 
-                    {% if request.user == post.user %}
-                    <button class="btn btn-link">Edit</button>
-                    {% endif %}
+                        {% timezone user.timezone %}
+                        <div class="col-3 ms-auto text-center">
+                            <sub>{{ post.created_at }}</sub>
+                        </div>
+                        {% endtimezone %}
 
-                    {% if user.timezone %}
+                        {% else %}
+                        <div class="col-3 ms-auto text-center">
+                            <sub>{{ post.created_at }}</sub>
+                        </div>
+                        {% endif %}
 
-                    {% timezone user.timezone %}
-                    <sub class="col-2">{{ post.created_at }}</sub>
-                    {% endtimezone %}
-
-                    {% else %}
-                    <sub class="col-2">{{ post.created_at }}</sub>
-                    {% endif %}
+                        {% if request.user == post.user %}
+                        <div class="col-auto">
+                            <button class="btn btn-link">Edit</button>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             {% endfor %}

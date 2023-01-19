@@ -10,7 +10,9 @@
 
             <div class="card my-2">
                 <!-- Add some sort of profile elements in header AFTER profile creation -->
-                <h5 class="card-header">{{ post.user }}</h5>
+                <h5 class="card-header"><a class="nav-link" href="{% url 'profile' post.user %}">
+                        {{ post.user }}</a>
+                </h5>
                 <div class="card-body">
                     <p class="card-text">{{ post.comment_field }}</p>
 

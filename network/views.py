@@ -99,7 +99,14 @@ def new_post(request):
 
 @login_required(redirect_field_name="", login_url="login")
 def profile_view(request, username):
-    user = request.user
-    if user.username != username:
-        return redirect("index")
-    return render(request, "network/profile.html", {"posts": user.post.all()})
+    if request.user != username:
+        print(request.user, username)
+        return render(
+            request,
+            "network/profile.html",
+            {
+                "posts": New_Post.objects.filter(user__username=username),
+                "username": username,
+            },
+        )
+    return render(request, "network/profile.html", {"posts": request.user.post.all()})
