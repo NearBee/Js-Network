@@ -102,4 +102,4 @@ def profile_view(request, username):
     user = request.user
     if user.username != username:
         return redirect("index")
-    return render(request, "network/profile.html")
+    return render(request, "network/profile.html", {"posts": user.post.all()})
