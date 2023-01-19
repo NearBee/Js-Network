@@ -9,4 +9,5 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("new_post", views.new_post, name="new_post"),
     path("profile/<str:username>", views.profile_view, name="profile"),
+    path("<str:username>/following", views.following_view, name="following"),
 ]
