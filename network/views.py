@@ -110,3 +110,12 @@ def profile_view(request, username):
             },
         )
     return render(request, "network/profile.html", {"posts": request.user.post.all()})
+
+
+@login_required(redirect_field_name="", login_url="login")
+def following_view(request, username):
+    if request.user.username != username:
+        # Have an error message or sorts show up here
+        return redirect("index")
+
+    return render(request, "network/following.html")
