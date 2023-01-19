@@ -1,4 +1,6 @@
 {% extends "network/layout.html" %}
+{% load static %}
+{% load tz %}
 
 
 {% if user.is_authenticated %}
@@ -7,15 +9,58 @@
 
 {% block body %}
 <div class="container">
-    <div class="row">
+    <div class="row justify-content-center text-center my-5">
+        <div class="col-auto text-center">
+            Welcome to {{ user.username }}'s Profile!
+        </div>
         <div class="col-auto">
-            <p>Welcome to {{ user.username }}'s Profile!</p>
+            Followers: (Follower count will be here after implementation)
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-outline-primary btn-sm">Follow!</button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-7">
+            {% for post in posts %}
+            <div class="card my-2">
+                <!-- Add some sort of profile elements in header AFTER profile creation -->
+                <h5 class="card-header">{{ post.user }}</h5>
+                <div class="card-body">
+                    <p class="card-text">{{ post }}</p>
+
+                    <button id="likeButton" class="btn btn-link">Like</button>
+
+                    <small class="text-muted">Current likes: 0</small>
+                    <!-- Can be further improved when like function is finished-->
+
+                    {% if request.user != post.user %}
+                    <button class="btn btn-link">Follow</button>
+                    {% endif %}
+
+                    {% if request.user == post.user %}
+                    <button class="btn btn-link">Edit</button>
+                    {% endif %}
+
+                    {% if user.timezone %}
+
+                    {% timezone user.timezone %}
+                    <sub class="col-2">{{ post.created_at }}</sub>
+                    {% endtimezone %}
+
+                    {% else %}
+                    <sub class="col-2">{{ post.created_at }}</sub>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 {% endblock %}
 {% else %}
 
+<!-- This view has to be accessable by others but nothing can be edited/changed besides follow/unfollow -->
 <div class="container">
     <div class="row">
         <div class="col-auto">
