@@ -1,0 +1,32 @@
+{% extends "network/layout.html" %}
+{% load static %}
+{% load tz %}
+
+{% block title %}Following{% endblock %}
+
+{% block body %}
+
+{% if request.user == user %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            Hey it's working!
+        </div>
+    </div>
+</div>
+
+{% else %}
+
+<!-- This view has to be accessable by others that input the link into the addressbar somehow -->
+<div class="container">
+    <div class="row">
+        <div class="col-auto">
+            You shouldn't be here....
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
