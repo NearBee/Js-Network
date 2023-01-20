@@ -15,29 +15,43 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">{{ post.comment_field }}</p>
+                    <div class="row">
+                        <div class="col-2">
+                            <button id="likeButton" class="btn btn-link">Like</button>
+                        </div>
 
-                    <button id="likeButton" class="btn btn-link">Like</button>
+                        <div class="col-3">
+                            <small class="text-muted">Current likes: 0</small>
+                        </div>
+                        <!-- Can be further improved when like function is finished-->
 
-                    <small class="text-muted">Current likes: 0</small>
-                    <!-- Can be further improved when like function is finished-->
+                        {% if request.user != user %}
+                        <div class="col-2">
+                            <button class="btn btn-link">Follow</button>
+                        </div>
+                        {% endif %}
 
-                    {% if request.user != post.user %}
-                    <button class="btn btn-link">Follow</button>
-                    {% endif %}
+                        {% if request.user == post.user %}
+                        <div class="col-auto">
+                            <button class="btn btn-link">Edit</button>
+                        </div>
+                        {% endif %}
 
-                    {% if request.user == post.user %}
-                    <button class="btn btn-link">Edit</button>
-                    {% endif %}
+                        {% if user.timezone %}
 
-                    {% if user.timezone %}
+                        {% timezone user.timezone %}
+                        <div class="col-3 ms-auto text-center">
+                            <sub>{{ post.created_at }}</sub>
+                        </div>
+                        {% endtimezone %}
 
-                    {% timezone user.timezone %}
-                    <sub class="col-2">{{ post.created_at }}</sub>
-                    {% endtimezone %}
+                        {% else %}
+                        <div class="col-4 ms-auto text-center">
+                            <sub>{{ post.created_at }}</sub>
+                        </div>
+                        {% endif %}
 
-                    {% else %}
-                    <sub class="col-2">{{ post.created_at }}</sub>
-                    {% endif %} <!-- Need to used "CREATED AT" here-->
+                    </div> <!-- Need to used "CREATED AT" here-->
                 </div>
             </div>
 
