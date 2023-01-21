@@ -102,7 +102,6 @@ def new_post(request):
 def profile_view(request, username):
     target_user = User.objects.get(username=username)
     if request.user != username:
-        print(len(target_user.followers.all()))
         return render(
             request,
             "network/profile.html",
@@ -143,10 +142,8 @@ def follow_unfollow(request, username):
     target_user = User.objects.get(username=username)
     if current_user in target_user.followers.all():
         current_user.following.remove(target_user)
-        print("Successfully unfollowed")
     else:
         current_user.following.add(target_user)
-        print("Successfully followed")
     return JsonResponse({"message": "Successfully followed!"}, status=200)
 
 
