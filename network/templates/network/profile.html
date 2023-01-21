@@ -22,7 +22,8 @@
         <!-- Only shows up if the authenticated user is not the profile owner -->
         {% if user.username != username %}
         <div class="col-auto">
-            <button class="followButton" class="btn btn-link" data-username="{{ username }}">Follow</button>
+            <button id="followButton" class="btn btn-outline-primary btn-sm"
+                data-username="{{ username }}">Follow</button>
         </div>
         {% endif %}
 
