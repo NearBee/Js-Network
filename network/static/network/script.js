@@ -33,6 +33,7 @@ function follow_button(username) {
     })
         .then((response) => {
             if (document.querySelector(".followButton").contains("Follow")) {
+                // TODO: Doesn't currently work fix this so that the innerHTML
                 document.querySelector(".followButton").innerHTML = `<button class="followButton" data-username="${username}">Unfollow</button>`;
             } else {
                 document.querySelector(".followButton").innerHTML = `<button class="followButton" data-username="${username}">Follow</button>`;
