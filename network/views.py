@@ -1,8 +1,9 @@
 import pytz
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
@@ -100,7 +101,6 @@ def new_post(request):
 @login_required(redirect_field_name="", login_url="login")
 def profile_view(request, username):
     if request.user != username:
-        print(request.user, username)
         return render(
             request,
             "network/profile.html",
@@ -114,8 +114,27 @@ def profile_view(request, username):
 
 @login_required(redirect_field_name="", login_url="login")
 def following_view(request, username):
-    if request.user.username != username:
-        # Have an error message or sorts show up here
+    current_user = request.user
+    posts = New_Post.objects.filter(user__in=current_user.following.all())
+    if current_user.username != username:
+        # TODO: Have an error message or sorts show up here
         return redirect("index")
 
-    return render(request, "network/following.html")
+    return render(
+        request,
+        "network/following.html",
+        {"following": posts},
+    )
+
+
+@csrf_exempt
+def follow_unfollow(request, username):
+    current_user = request.user
+    target_user = User.objects.get(username=username)
+    if current_user in target_user.followers.all():
+        current_user.following.remove(target_user)
+        print("Successfully unfollowed")
+    else:
+        current_user.following.add(target_user)
+        print("Successfully followed")
+    return JsonResponse({"message": "Successfully followed!"}, status=200)
