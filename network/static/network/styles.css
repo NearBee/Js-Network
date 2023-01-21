@@ -1,0 +1,18 @@
+nav {
+    background: #66B067;
+}
+
+body {
+    background: #F5F5F5;
+    /* color: #E5E5CB; */
+}
+
+.card-header {
+    background: #7EB07F;
+    color: #212529;
+}
+
+.card-body {
+    background: #FFFFFF;
+    color: #212529;
+}
