@@ -100,16 +100,26 @@ def new_post(request):
 
 @login_required(redirect_field_name="", login_url="login")
 def profile_view(request, username):
+    target_user = User.objects.get(username=username)
     if request.user != username:
+        print(len(target_user.followers.all()))
         return render(
             request,
             "network/profile.html",
             {
                 "posts": New_Post.objects.filter(user__username=username),
                 "username": username,
+                "followers": len(target_user.followers.all()),
             },
         )
-    return render(request, "network/profile.html", {"posts": request.user.post.all()})
+    return render(
+        request,
+        "network/profile.html",
+        {
+            "posts": request.user.post.all(),
+            "followers": len(target_user.followers.all()),
+        },
+    )
 
 
 @login_required(redirect_field_name="", login_url="login")
@@ -138,3 +148,8 @@ def follow_unfollow(request, username):
         current_user.following.add(target_user)
         print("Successfully followed")
     return JsonResponse({"message": "Successfully followed!"}, status=200)
+
+
+def get_followers(request, username):
+    target_user = User.objects.get(username=username)
+    return JsonResponse({"followers": len(target_user.followers.all())})
