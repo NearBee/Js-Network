@@ -9,9 +9,58 @@
 {% if request.user == user %}
 
 <div class="container">
-    <div class="row">
-        <div class="col">
-            Hey it's working!
+    <div class="row justify-content-center">
+        <div class="col-7">
+            {% for post in following|dictsortreversed:'created_at' %}
+            <div class="card my-2">
+                <!-- Add some sort of profile elements in header AFTER profile creation -->
+                <h5 class="card-header">{{ post.user }}</h5>
+                <div class="card-body">
+                    <p class="card-text">{{ post }}</p>
+                    <div class="row">
+                        <div class="col-2">
+                            <button id="likeButton" class="btn btn-link">Like</button>
+                        </div>
+
+                        <div class="col-3">
+                            <small class="text-muted">Current likes: 0</small>
+                        </div>
+                        <!-- Can be further improved when like function is finished-->
+
+                        {% if request.user != user %}
+                        <div class="col-2">
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="button" class="followButton" class="btn btn-link"
+                                    data-username="{{ username }}">Follow</button>
+                            </form>
+                        </div>
+                        {% endif %}
+
+                        {% if request.user == post.user %}
+                        <div class="col-auto">
+                            <button class="btn btn-link">Edit</button>
+                        </div>
+                        {% endif %}
+
+                        {% if user.timezone %}
+
+                        {% timezone user.timezone %}
+                        <div class="col-3 ms-auto text-center">
+                            <sub>{{ post.created_at }}</sub>
+                        </div>
+                        {% endtimezone %}
+
+                        {% else %}
+                        <div class="col-3 ms-auto text-center">
+                            <sub>{{ post.created_at }}</sub>
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
