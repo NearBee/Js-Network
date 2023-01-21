@@ -31,6 +31,17 @@ function follow_button(username) {
             username: username
         })
     })
+        .then(() => {
+            fetch(`/get_followers/${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    const followers = data.followers;
+                    document.querySelector("#follower_count").innerHTML = `Followers: ${followers}`;
+                })
+                .catch(error => {
+                    console.log(`Error: ${error}`);
+                })
+        })
         .then((response) => {
             if (document.querySelector(".followButton").contains("Follow")) {
                 // TODO: Doesn't currently work fix this so that the innerHTML
@@ -43,6 +54,7 @@ function follow_button(username) {
             console.log(`Error:${error}`);
         });
 }
+
 
 // May have to use fetch(), which would require making an mock API request
 // Look at Lecture 5 notes "Counter" for an idea of what to possibly do
