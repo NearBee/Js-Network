@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const likeButtons = document.querySelectorAll('#likeButton');
-    const followButtons = document.querySelectorAll(".followButton");
+    const followButtons = document.querySelectorAll("#followButton");
 
     for (let button of likeButtons) {
         button.addEventListener('click', like_button);
@@ -43,11 +43,11 @@ function follow_button(username) {
                 })
         })
         .then((response) => {
-            if (document.querySelector(".followButton").contains("Follow")) {
+            if (document.querySelector("#followButton").contains("Follow")) {
                 // TODO: Doesn't currently work fix this so that the innerHTML
-                document.querySelector(".followButton").innerHTML = `<button class="followButton" data-username="${username}">Unfollow</button>`;
+                document.querySelector("#followButton").innerHTML = `<button class="followButton" data-username="${username}">Unfollow</button>`;
             } else {
-                document.querySelector(".followButton").innerHTML = `<button class="followButton" data-username="${username}">Follow</button>`;
+                document.querySelector("#followButton").innerHTML = `<button class="followButton" data-username="${username}">Follow</button>`;
             }
         })
         .catch(error => {
