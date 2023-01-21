@@ -20,7 +20,7 @@
         <!-- Only shows up if the authenticated user is not the profile owner -->
         {% if user.username != username %}
         <div class="col-auto">
-            <button id="followButton" class="btn btn-outline-primary btn-sm">Follow!</button>
+            <button class="followButton" class="btn btn-link" data-username="{{ username }}">Follow</button>
         </div>
         {% endif %}
 
@@ -45,8 +45,15 @@
                         <!-- Can be further improved when like function is finished-->
 
                         {% if request.user != user %}
-                        <div class="col-2">
-                            <button class="btn btn-link">Follow</button>
+                        <div class="col-auto">
+                            <button class="followButton" class="btn btn-link"
+                                data-username="{{ username }}">Follow</button>
+                        </div>
+                        {% endif %}
+
+                        {% if request.user == post.user %}
+                        <div class="col-auto">
+                            <button class="btn btn-link">Edit</button>
                         </div>
                         {% endif %}
 
@@ -64,11 +71,6 @@
                         </div>
                         {% endif %}
 
-                        {% if request.user == post.user %}
-                        <div class="col-auto">
-                            <button class="btn btn-link">Edit</button>
-                        </div>
-                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -76,16 +78,12 @@
         </div>
     </div>
 </div>
-{% endblock %}
-{% else %}
 
-<!-- This view has to be accessable by others but nothing can be edited/changed besides follow/unfollow -->
-<div class="container">
-    <div class="row">
-        <div class="col-auto">
-            You shouldn't be here....
-        </div>
-    </div>
-</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'network/script.js' %}"></script>
+{% endblock %}
 
 {% endif %}
