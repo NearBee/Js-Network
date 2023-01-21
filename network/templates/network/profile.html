@@ -14,7 +14,9 @@
             Welcome to {{ username }}'s Profile!
         </div>
         <div class="col-auto">
-            Followers: (Follower count will be here after implementation)
+            <div id="follower_count">
+                Followers: {{ followers }}
+            </div>
         </div>
 
         <!-- Only shows up if the authenticated user is not the profile owner -->
