@@ -113,12 +113,22 @@ def new_post(request):
 @login_required(redirect_field_name="", login_url="login")
 def profile_view(request, username):
     target_user = User.objects.get(username=username)
+    posts = request.user.post.all()
+    paginated = Paginator(posts, 10)
+
+    page_number = request.GET.get("page", 1)
+    page_obj = paginated.get_page(page_number)
     if request.user != username:
+        new_posts = New_Post.objects.filter(user__username=username)
+        paginated = Paginator(new_posts, 10)
+
+        page_number = request.GET.get("page", 1)
+        page_obj = paginated.get_page(page_number)
         return render(
             request,
             "network/profile.html",
             {
-                "posts": New_Post.objects.filter(user__username=username),
+                "posts": page_obj,
                 "username": username,
                 "followers": len(target_user.followers.all()),
             },
@@ -127,7 +137,7 @@ def profile_view(request, username):
         request,
         "network/profile.html",
         {
-            "posts": request.user.post.all(),
+            "posts": page_obj,
             "followers": len(target_user.followers.all()),
         },
     )
