@@ -1,10 +1,10 @@
-nav {
-    background: #66B067;
-}
-
 body {
     background: #F5F5F5;
     /* color: #E5E5CB; */
+}
+
+body>nav {
+    background: #66B067;
 }
 
 .card-header {
