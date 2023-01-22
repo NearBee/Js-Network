@@ -8,7 +8,7 @@
         <div class="col-7">
             {% for post in posts %}
 
-            <div class="card my-2">
+            <div id="post-{{ post.id }}" class="card my-2">
                 <!-- Add some sort of profile elements in header AFTER profile creation -->
                 <h5 class="card-header"><a class="nav-link" href="{% url 'profile' post.user %}">
                         {{ post.user }}</a>
@@ -17,23 +17,24 @@
                     <p class="card-text">{{ post.comment_field }}</p>
                     <div class="row">
                         <div class="col-2">
-                            <button id="likeButton" class="btn btn-link">Like</button>
+                            <button id="likeButton" class="btn btn-outline-primary btn-sm"
+                                data-id="{{ post.id }}">Like</button>
                         </div>
 
                         <div class="col-3">
-                            <small class="text-muted">Current likes: 0</small>
+                            <small id="current_likes" class="text-muted">Likes: {{ post.likes.all|length }}</small>
                         </div>
                         <!-- Can be further improved when like function is finished-->
 
                         {% if request.user != user %}
                         <div class="col-2">
-                            <button class="btn btn-link">Follow</button>
+                            <button class="btn btn-outline-primary btn-sm">Follow</button>
                         </div>
                         {% endif %}
 
                         {% if request.user == post.user %}
                         <div class="col-auto">
-                            <button class="btn btn-link">Edit</button>
+                            <button class="btn btn-outline-primary btn-sm">Edit</button>
                         </div>
                         {% endif %}
 
@@ -61,8 +62,8 @@
     </div>
 </div>
 
-{% block script %}
-<script src="{% static 'network/script.js' %}"></script>
 {% endblock %}
 
+{% block script %}
+<script src="{% static 'network/script.js' %}"></script>
 {% endblock %}

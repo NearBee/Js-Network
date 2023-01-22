@@ -32,18 +32,19 @@
     <div class="row justify-content-center">
         <div class="col-7">
             {% for post in posts %}
-            <div class="card my-2">
+            <div id="post-{{ post.id }}" class="card my-2">
                 <!-- Add some sort of profile elements in header AFTER profile creation -->
                 <h5 class="card-header">{{ post.user }}</h5>
                 <div class="card-body">
-                    <p class="card-text">{{ post }}</p>
+                    <p class="card-text">{{ post.comment_field }}</p>
                     <div class="row">
                         <div class="col-2">
-                            <button id="likeButton" class="btn btn-link">Like</button>
+                            <button id="likeButton" class="btn btn-outline-primary btn-sm"
+                                data-id="{{ post.id }}">Like</button>
                         </div>
 
                         <div class="col-3">
-                            <small class="text-muted">Current likes: 0</small>
+                            <small id="current_likes" class="text-muted">Likes: {{ post.likes.all|length }}</small>
                         </div>
                         <!-- Can be further improved when like function is finished-->
 

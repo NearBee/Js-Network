@@ -12,76 +12,76 @@
     <div class="row justify-content-center">
         <div class="col-7">
             {% for post in following|dictsortreversed:'created_at' %}
-            <div class="card my-2">
+            <div id="post-{{ post.id }}" class="card my-2">
                 <!-- Add some sort of profile elements in header AFTER profile creation -->
                 <h5 class="card-header">{{ post.user }}</h5>
                 <div class="card-body">
                     <p class="card-text">{{ post }}</p>
                     <div class="row">
                         <div class="col-2">
-                            <button id="likeButton" class="btn btn-link">Like</button>
+                            <button id="likeButton" class="btn btn-outline-primary btn-sm"
+                                data-id="{{ post.id }}">Like</button>
                         </div>
 
                         <div class="col-3">
-                            <small class="text-muted">Current likes: 0</small>
+                            <small id="current_likes" class="text-muted">Likes: {{ post.likes.all|length }}</small>
+                            </d <!-- Can be further improved when like function is finished-->
+
+                            {% if request.user != user %}
+                            <div class="col-2">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <button type="button" class="followButton" class="btn btn-link"
+                                        data-username="{{ username }}">Follow</button>
+                                </form>
+                            </div>
+                            {% endif %}
+
+                            {% if request.user == post.user %}
+                            <div class="col-auto">
+                                <button class="btn btn-link">Edit</button>
+                            </div>
+                            {% endif %}
+
+                            {% if user.timezone %}
+
+                            {% timezone user.timezone %}
+                            <div class="col-3 ms-auto text-center">
+                                <sub>{{ post.created_at }}</sub>
+                            </div>
+                            {% endtimezone %}
+
+                            {% else %}
+                            <div class="col-3 ms-auto text-center">
+                                <sub>{{ post.created_at }}</sub>
+                            </div>
+                            {% endif %}
+
                         </div>
-                        <!-- Can be further improved when like function is finished-->
-
-                        {% if request.user != user %}
-                        <div class="col-2">
-                            <form method="post">
-                                {% csrf_token %}
-                                <button type="button" class="followButton" class="btn btn-link"
-                                    data-username="{{ username }}">Follow</button>
-                            </form>
-                        </div>
-                        {% endif %}
-
-                        {% if request.user == post.user %}
-                        <div class="col-auto">
-                            <button class="btn btn-link">Edit</button>
-                        </div>
-                        {% endif %}
-
-                        {% if user.timezone %}
-
-                        {% timezone user.timezone %}
-                        <div class="col-3 ms-auto text-center">
-                            <sub>{{ post.created_at }}</sub>
-                        </div>
-                        {% endtimezone %}
-
-                        {% else %}
-                        <div class="col-3 ms-auto text-center">
-                            <sub>{{ post.created_at }}</sub>
-                        </div>
-                        {% endif %}
-
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
-</div>
 
-<!-- Create a look for if the user is following no one -->
+    <!-- Create a look for if the user is following no one -->
 
-{% else %}
+    {% else %}
 
-<!-- This view has to be accessable by others that input the link into the addressbar somehow -->
-<div class="container">
-    <div class="row">
-        <div class="col-auto">
-            You shouldn't be here....
+    <!-- This view has to be accessable by others that input the link into the addressbar somehow -->
+    <div class="container">
+        <div class="row">
+            <div class="col-auto">
+                You shouldn't be here....
+            </div>
         </div>
     </div>
-</div>
 
-{% endif %}
+    {% endif %}
 
-{% endblock %}
+    {% endblock %}
 
-{% block script %}
-<script src="{% static 'network/script.js' %}"></script>
-{% endblock %}
+    {% block script %}
+    <script src="{% static 'network/script.js' %}"></script>
+    {% endblock %}
