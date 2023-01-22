@@ -1,4 +1,5 @@
 import pytz
+from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -13,10 +14,16 @@ from .models import New_Post, User
 
 
 def index(request):
+    posts = New_Post.objects.all()
+    paginated = Paginator(posts, 10)
+
+    page_number = request.GET.get("page", 1)
+    page_obj = paginated.get_page(page_number)
+
     return render(
         request,
         "network/index.html",
-        {"posts": New_Post.objects.all()},
+        {"posts": page_obj},
     )
 
 
