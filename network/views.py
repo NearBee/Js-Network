@@ -147,15 +147,21 @@ def profile_view(request, username):
 def following_view(request, username):
     current_user = request.user
     posts = New_Post.objects.filter(user__in=current_user.following.all())
+    paginated = Paginator(posts, 10)
+
+    page_number = request.GET.get("page", 1)
+    page_obj = paginated.get_page(page_number)
+
     if current_user.username != username:
         # TODO: Have an error message or sorts show up here
         return redirect("index")
 
-    return render(
-        request,
-        "network/following.html",
-        {"following": posts},
-    )
+    else:
+        return render(
+            request,
+            "network/following.html",
+            {"posts": page_obj},
+        )
 
 
 @csrf_exempt
