@@ -1,18 +1,23 @@
 import pytz
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
 from django.db import IntegrityError
+from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 from .forms import new_post_form
 from .models import New_Post, User
 
 
 def index(request):
-    return render(request, "network/index.html", {"posts": New_Post.objects.all()})
+    return render(
+        request,
+        "network/index.html",
+        {"posts": New_Post.objects.all()},
+    )
 
 
 def login_view(request):
@@ -150,3 +155,22 @@ def follow_unfollow(request, username):
 def get_followers(request, username):
     target_user = User.objects.get(username=username)
     return JsonResponse({"followers": len(target_user.followers.all())})
+
+
+@csrf_exempt
+@login_required(redirect_field_name="", login_url="login")
+def like_post(request, id):
+    current_user = request.user
+    target_post = New_Post.objects.filter(id=id).get()
+
+    if current_user in target_post.likes.all():
+        current_user.like.remove(target_post)
+    else:
+        current_user.like.add(target_post)
+
+    return JsonResponse({"message": "Post liked!"}, status=200)
+
+
+def get_likes(request, id):
+    target_post = New_Post.objects.filter(id=id)
+    return JsonResponse({"likes": len(target_post.get().likes.all())})
