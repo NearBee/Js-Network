@@ -121,7 +121,9 @@ def profile_view(request, username):
     page_number = request.GET.get("page", 1)
     page_obj = paginated.get_page(page_number)
     if request.user != username:
-        new_posts = New_Post.objects.filter(user__username=username)
+        new_posts = New_Post.objects.order_by("-created_at").filter(
+            user__username=username
+        )
         paginated = Paginator(new_posts, 10)
 
         page_number = request.GET.get("page", 1)
