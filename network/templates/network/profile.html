@@ -14,16 +14,17 @@
             Welcome to {{ username }}'s Profile!
         </div>
         <div class="col-auto">
-            <div id="follower_count">
+            <div class="followerCount">
                 Followers: {{ followers }}
+                {% if request.user == username %}Following: {{ current_user.following.all|length }}{% else %}Following:
+                {{ target_user.following.all|length }}{% endif %}
             </div>
         </div>
 
         <!-- Only shows up if the authenticated user is not the profile owner -->
         {% if user.username != username %}
         <div class="col-auto">
-            <button id="followButton" class="btn btn-outline-primary btn-sm"
-                data-username="{{ username }}">Follow</button>
+            <button class="btn btn-outline-primary btn-sm followButton" data-username="{{ username }}">Follow</button>
         </div>
         {% endif %}
 
@@ -34,30 +35,37 @@
             {% for post in posts|dictsortreversed:'created_at' %}
             <div id="post-{{ post.id }}" class="card my-2">
                 <!-- Add some sort of profile elements in header AFTER profile creation -->
-                <h5 class="card-header">{{ post.user }}</h5>
+                <div class="card-header justify-content-between" style="display: flex;">
+                    <a class="nav-link col-10 fs-5" href="{% url 'profile' post.user %}">
+                        {{ post.user }}
+                    </a>
+                    {% if request.user == post.user %}
+                    <div class="col-auto">
+                        <button class="btn btn-outline-secondary btn-sm editButton"
+                            data-id="{{ post.id }}">Edit</button>
+                    </div>
+                    {% endif %}
+                </div>
                 <div class="card-body">
                     <p class="card-text">{{ post.comment_field }}</p>
-                    <div class="row">
-                        <div class="col-2">
-                            <button id="likeButton" class="btn btn-outline-primary btn-sm"
-                                data-id="{{ post.id }}">Like</button>
+                    <div class="row justify-content-between card-buttons">
+
+                        <div class="col-auto">
+                            <button class="btn btn-outline-primary btn-sm likeButton" data-id="{{ post.id }}">
+                                {% if request.user not in post.likes.all %}Like{% else %}Unlike{% endif %}
+                            </button>
                         </div>
 
-                        <div class="col-3">
-                            <small id="current_likes" class="text-muted">Likes: {{ post.likes.all|length }}</small>
+
+                        <div class="col-auto">
+                            <small class="text-muted currentLikes">Likes: {{ post.likes.all|length }}</small>
                         </div>
-                        <!-- Can be further improved when like function is finished-->
 
                         {% if request.user != user %}
                         <div class="col-auto">
-                            <button class="followButton" class="btn btn-link"
-                                data-username="{{ username }}">Follow</button>
-                        </div>
-                        {% endif %}
-
-                        {% if request.user == post.user %}
-                        <div class="col-auto">
-                            <button class="btn btn-link">Edit</button>
+                            <button class="btn btn-outline-success followButton" data-username="{{ username }}">
+                                {% if request.user not in user.followers.all %}Follow{% else %}Unfollow{% endif %}
+                            </button>
                         </div>
                         {% endif %}
 
@@ -76,6 +84,15 @@
                         {% endif %}
 
                     </div>
+
+                    <!-- Appears only if the user is able to edit a post -->
+                    <div class="row justify-content-center submitRow" style="display: none;">
+                        <div class="col-auto w-75">
+                            <button class="btn btn-outline-success btn-sm submitButton w-100"
+                                data-id="{{ post.id }}">Submit</button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             {% endfor %}
@@ -93,12 +110,14 @@
             <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
         </li>
         {% else %}
+
         <li class="page-item disabled col-auto">
             <a class="page-link rounded-start-pill" href="?page=1">&laquo; First</a>
         </li>
         <li class="page-item disabled col-auto">
             <a class="page-link" href="#">Previous</a>
         </li>
+
         {% endif %}
         </li>
 
@@ -115,12 +134,14 @@
             <a class="page-link rounded-end-pill" href="?page={{ posts.paginator.num_pages }}">Last&raquo;</a>
         </li>
         {% else %}
+
         <li class="page-item disabled col-auto">
             <a class="page-link" href="#">Next</a>
         </li>
         <li class="page-item disabled col-auto rounded-end-pill">
             <a class="page-link rounded-end-pill" href="?page={{ posts.paginator.num_pages }}">Last&raquo;</a>
         </li>
+
         {% endif %}
         <li class="page-item"></li>
     </ul>
