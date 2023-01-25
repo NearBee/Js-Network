@@ -1,7 +1,9 @@
+import json
+
 import pytz
-from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -14,7 +16,7 @@ from .models import New_Post, User
 
 
 def index(request):
-    posts = New_Post.objects.all()
+    posts = New_Post.objects.order_by("-created_at").all()
     paginated = Paginator(posts, 10)
 
     page_number = request.GET.get("page", 1)
@@ -113,7 +115,7 @@ def new_post(request):
 @login_required(redirect_field_name="", login_url="login")
 def profile_view(request, username):
     target_user = User.objects.get(username=username)
-    posts = request.user.post.all()
+    posts = request.user.post.order_by("-created_at").all()
     paginated = Paginator(posts, 10)
 
     page_number = request.GET.get("page", 1)
@@ -131,6 +133,8 @@ def profile_view(request, username):
                 "posts": page_obj,
                 "username": username,
                 "followers": len(target_user.followers.all()),
+                "current_user": User.objects.filter(username=request.user).get(),
+                "target_user": target_user,
             },
         )
     return render(
@@ -146,7 +150,9 @@ def profile_view(request, username):
 @login_required(redirect_field_name="", login_url="login")
 def following_view(request, username):
     current_user = request.user
-    posts = New_Post.objects.filter(user__in=current_user.following.all())
+    posts = New_Post.objects.order_by("-created_at").filter(
+        user__in=current_user.following.all()
+    )
     paginated = Paginator(posts, 10)
 
     page_number = request.GET.get("page", 1)
@@ -197,3 +203,21 @@ def like_post(request, id):
 def get_likes(request, id):
     target_post = New_Post.objects.filter(id=id)
     return JsonResponse({"likes": len(target_post.get().likes.all())})
+
+
+@csrf_exempt
+def edit_post(request, id):
+    target_post = New_Post.objects.filter(id=id).first()
+    if not target_post:
+        return JsonResponse({"error": "Error! No post found"}, status=404)
+
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        comment_field = data.get("comment_field")
+
+        if not comment_field:
+            return JsonResponse({"error": "Error! No comment found"}, status=404)
+        target_post.comment_field = comment_field
+        target_post.save()
+
+    return JsonResponse({"message": "Edit submitted!"}, status=200)
