@@ -14,28 +14,32 @@
             {% for post in posts|dictsortreversed:'created_at' %}
             <div id="post-{{ post.id }}" class="card my-2">
                 <!-- Add some sort of profile elements in header AFTER profile creation -->
-                <h5 class="card-header">{{ post.user }}</h5>
+                <div class="card-header justify-content-between" style="display: flex;">
+                    <a class="nav-link col-9 fs-5" href="{% url 'profile' post.user %}">
+                        {{ post.user }}
+                    </a>
+                    {% if request.user != post.user %}
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-outline-success btn-sm followButton"
+                            data-username="{{ username }}">
+                            {% if request.user not in post.user.followers.all %}Follow{% else %}Unfollow{% endif %}
+                        </button>
+                    </div>
+                </div>
+                {% endif %}
                 <div class="card-body">
                     <p class="card-text">{{ post }}</p>
-                    <div class="row">
-                        <div class="col-2">
-                            <button id="likeButton" class="btn btn-outline-primary btn-sm"
-                                data-id="{{ post.id }}">Like</button>
+                    <div class="row justify-content-between card-buttons">
+                        <div class="col-auto">
+                            <button class="btn btn-outline-primary btn-sm likeButton" data-id="{{ post.id }}">
+                                {% if request.user not in post.likes.all %}Like{% else %}Unlike{% endif %}
+                            </button>
                         </div>
 
-                        <div class="col-3">
-                            <small id="current_likes" class="text-muted">Likes: {{ post.likes.all|length }}</small>
+                        <div class="col-auto">
+                            <small class="text-muted currentLikes">Likes: {{ post.likes.all|length }}</small>
                         </div>
 
-                        {% if request.user != user %}
-                        <div class="col-2">
-                            <form method="post">
-                                {% csrf_token %}
-                                <button type="button" class="followButton" class="btn btn-link"
-                                    data-username="{{ username }}">Follow</button>
-                            </form>
-                        </div>
-                        {% endif %}
 
                         {% if request.user == post.user %}
                         <div class="col-auto">
@@ -75,12 +79,14 @@
             <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
         </li>
         {% else %}
+
         <li class="page-item disabled col-auto">
             <a class="page-link rounded-start-pill" href="?page=1">&laquo; First</a>
         </li>
         <li class="page-item disabled col-auto">
             <a class="page-link" href="#">Previous</a>
         </li>
+
         {% endif %}
         </li>
 
@@ -97,12 +103,14 @@
             <a class="page-link rounded-end-pill" href="?page={{ posts.paginator.num_pages }}">Last&raquo;</a>
         </li>
         {% else %}
+
         <li class="page-item disabled col-auto">
             <a class="page-link" href="#">Next</a>
         </li>
         <li class="page-item disabled col-auto rounded-end-pill">
             <a class="page-link rounded-end-pill" href="?page={{ posts.paginator.num_pages }}">Last&raquo;</a>
         </li>
+
         {% endif %}
         <li class="page-item"></li>
     </ul>
