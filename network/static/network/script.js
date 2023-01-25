@@ -1,11 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const likeButtons = document.querySelectorAll('#likeButton');
-    const followButtons = document.querySelectorAll("#followButton");
+    const likeButtons = document.querySelectorAll('.likeButton');
+    const followButtons = document.querySelectorAll(".followButton");
+    const editButtons = document.querySelectorAll(".editButton");
+    const submitButtons = document.querySelectorAll(".submitButton");
 
     // Finding and utilizing Like Button
     for (let button of likeButtons) {
         button.addEventListener('click', function () {
             let id = button.getAttribute("data-id");
+            // let currentLiker = button.getAttribute("request.user")
             like_button(id);
         });
     }
@@ -17,10 +20,26 @@ document.addEventListener('DOMContentLoaded', function () {
             follow_button(username);
         });
     }
+
+    // Finding edit buttons
+    for (let button of editButtons) {
+        button.addEventListener("click", function () {
+            let id = button.getAttribute("data-id");
+            edit_post(id);
+        });
+    }
+
+    // Finding Submit buttons
+    for (let button of submitButtons) {
+        button.addEventListener("click", function () {
+            let id = button.getAttribute("data-id");
+            submitFunction(id);
+        });
+    }
 });
 
 
-function like_button(id) {
+function like_button(id, currentLiker) {
     fetch(`/like_post/${id}`, {
         method: 'POST',
         body: JSON.stringify({
@@ -32,23 +51,28 @@ function like_button(id) {
                 .then(response => response.json())
                 .then(data => {
                     const likes = data.likes;
-                    document.querySelector(`#post-${id} #current_likes`).innerHTML = `Likes: ${likes}`;
+                    document.querySelector(`#post-${id} .currentLikes`).innerHTML = `Likes: ${likes}`;
                 })
+
                 .catch(error => {
                     console.log(`Error: ${error}`);
-                })
+                });
         })
+
         .then((response => {
-            if (document.querySelector("#likeButton").contains("Follow")) {
-                // TODO: Doesn't currently work fix this so that the innerHTML
-                document.querySelector("#likeButton").innerHTML = `<button id="likeButton" class="btn btn-outline-danger btn-sm" data-id="${id}">Unfollow</button>`;
+            // TODO: also inner html only changing AFTER the first instance rather than reading from page load
+            if (document.querySelector(`#post-${id} .likeButton`).textContent === "Like") {
+                document.querySelector(`#post-${id} .likeButton`).innerHTML = `Unlike`;
+
             } else {
-                document.querySelector("#likeButton").innerHTML = `<button id="likeButton" class="btn btn-outline-primary btn-sm" data-id="${id}">Follow</button>`;
+                document.querySelector(`#post-${id} .likeButton`).innerHTML = `Like`;
+
             }
         }))
+
         .catch(error => {
             console.log(`Error: ${error}`);
-        })
+        });
 }
 
 function follow_button(username) {
@@ -64,26 +88,68 @@ function follow_button(username) {
                 .then(response => response.json())
                 .then(data => {
                     const followers = data.followers;
-                    document.querySelector("#follower_count").innerHTML = `Followers: ${followers}`;
+                    document.querySelector(".follower_count").innerHTML = `Followers: ${followers}`;
                 })
+
                 .catch(error => {
                     console.log(`Error: ${error}`);
-                })
+                });
         })
+
         .then((response) => {
-            if (document.querySelector("#followButton").contains("Follow")) {
-                // TODO: Doesn't currently work fix this so that the innerHTML
-                document.querySelector("#followButton").innerHTML = `<button class="followButton" data-username="${username}">Unfollow</button>`;
+            // TODO: also inner html only changing AFTER the first instance rather than reading from page load
+            if (document.querySelector(".followButton").textContent === "Follow") {
+                document.querySelector(".followButton").innerHTML = `Unfollow`;
+
             } else {
-                document.querySelector("#followButton").innerHTML = `<button class="followButton" data-username="${username}">Follow</button>`;
+                document.querySelector(".followButton").innerHTML = `Follow`;
             }
         })
+
         .catch(error => {
             console.log(`Error:${error}`);
         });
 }
 
+function edit_post(id) {
+    // Grab and replace the post section with a textarea here
+    let editCol = document.querySelector(`#post-${id} .card-text`);
+    let editColContent = editCol.textContent;
+    let initialRow = document.querySelector(`#post-${id} .card-buttons`);
+    let submitRow = document.querySelector(`#post-${id} .submitRow`);
 
-// May have to use fetch(), which would require making an mock API request
-// Look at Lecture 5 notes "Counter" for an idea of what to possibly do
-// Maybe do something like "likes++" if button === "like"
+    // Make Changes
+    editCol.innerHTML = `<textarea name="comment_field" cols="40" rows="10" style="height: 100px; width: 100%; resize: initial;" class="form-control commentField" maxlength="1000" required="">${editColContent}</textarea>`;
+    initialRow.style.display = 'none';
+    document.querySelector(`#post-${id} .editButton`).style.display = 'none';
+    submitRow.style.display = 'flex';
+
+};
+
+function submitFunction(id) {
+    // find text area and isolate editedtext
+    let editCol = document.querySelector(`#post-${id} .card-text`);
+    let textarea = document.querySelector(`#post-${id} textarea[name="comment_field"]`);
+    let editedText = textarea.value;
+    let initialRow = document.querySelector(`#post-${id} .card-buttons`);
+    let submitRow = document.querySelector(`#post-${id} .submitRow`);
+
+    // Submit changes presented in edit form here
+    fetch(`/submit_edit/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            comment_field: editedText
+        })
+    })
+
+        .then((response) => {
+            editCol.innerHTML = `<p class="card-text">${editedText}</p>`;
+            submitRow.style.display = 'none';
+            document.querySelector(`#post-${id} .editButton`).style.display = 'inline-block';
+            initialRow.style.display = 'flex';
+        })
+
+        .catch(error => {
+            console.log(`Error: ${error}`);
+        });
+}
