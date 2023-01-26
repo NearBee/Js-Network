@@ -16,3 +16,56 @@ body>nav {
     background: #FFFFFF;
     color: #212529;
 }
+
+.dark-mode,
+.dark-mode form {
+    background: #212529;
+    color: lightgray;
+}
+
+.dark-mode .card,
+.dark-mode .page-item.disabled {
+    border: #444b53;
+}
+
+.dark-mode .page-item.disabled {
+    background: #2B3035;
+}
+
+
+.dark-mode .page-link {
+    border: #555e68 !important;
+}
+
+.dark-mode .card-body {
+    background: #2B3035;
+    color: lightgray;
+}
+
+.dark-mode .card-header,
+.dark-mode .navbar,
+.dark-mode .offcanvas-end,
+.dark-mode .page-link,
+.dark-mode textarea,
+.dark-mode textarea:focus {
+    background: #363c42;
+    color: lightgray;
+}
+
+.dark-mode .navbar-toggler {
+    background: gray;
+}
+
+.dark-mode .navbar-toggler-icon {
+    color: lightgray !important;
+}
+
+.dark-mode .disabled .page-link {
+    color: gray;
+}
+
+.dark-mode .text-muted,
+.dark-mode .navbar-brand,
+.dark-mode .nav-link {
+    color: lightgray !important;
+}
