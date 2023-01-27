@@ -18,7 +18,7 @@ class User(AbstractUser):
 # Class for New Form (possibly add mmore models or less models not sure yet)
 class New_Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="post")
-    comment_field = models.TextField(
+    post_field = models.TextField(
         max_length=1000,
         blank=False,
     )
@@ -28,4 +28,4 @@ class New_Post(models.Model):
     )
 
     def __str__(self):
-        return self.comment_field
+        return self.post_field

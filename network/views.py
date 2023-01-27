@@ -215,11 +215,11 @@ def edit_post(request, id):
 
     if request.method == "PUT":
         data = json.loads(request.body)
-        comment_field = data.get("comment_field")
+        post_field = data.get("post_field")
 
-        if not comment_field:
+        if not post_field:
             return JsonResponse({"error": "Error! No comment found"}, status=404)
-        target_post.comment_field = comment_field
+        target_post.post_field = post_field
         target_post.save()
 
     return JsonResponse({"message": "Edit submitted!"}, status=200)

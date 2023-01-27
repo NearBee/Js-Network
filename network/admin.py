@@ -13,7 +13,7 @@ class NewPostAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "user",
-        "comment_field",
+        "post_field",
     )
 
     # inlines =[]
