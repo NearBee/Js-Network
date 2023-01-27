@@ -15,7 +15,8 @@ form {
     background: #F5F5F5;
 }
 
-.card-header {
+.card-header,
+.titleClass {
     background: #7EB07F;
     color: #212529;
 }
@@ -34,8 +35,9 @@ form {
 }
 
 .dark-mode .card,
-.dark-mode .page-item.disabled {
-    border: #444b53;
+.dark-mode .page-item.disabled,
+.dark-mode .titleClass {
+    border: #444b53 !important;
 }
 
 .dark-mode .page-link {
@@ -52,7 +54,8 @@ form {
 .dark-mode .offcanvas-end,
 .dark-mode .page-link,
 .dark-mode textarea,
-.dark-mode textarea:focus {
+.dark-mode textarea:focus,
+.dark-mode .titleClass {
     background: #363c42;
     color: lightgray;
 }
