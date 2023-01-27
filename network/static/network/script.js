@@ -173,12 +173,28 @@ function themeChange() {
     let element = document.querySelector("body")
 
     if (!(element.classList.contains('dark-mode'))) {
+
+        // Add darkmode class to change theme based on CSS
         element.classList.add("dark-mode");
         button.innerHTML = '<i class="bi bi-moon-fill"></i> Dark Mode';
+
+        // Change Button color for better readability
+        button.classList.remove('btn-outline-dark');
+        button.classList.add('btn-outline-light');
+
+        // Save body's class to local storage for a cleaner flow
         localStorage.setItem('body', element.classList);
     } else {
+
+        // Remove darkmode class to change theme based on CSS
         element.classList.remove("dark-mode");
         button.innerHTML = '<i class="bi bi-sun-fill"></i> Light Mode';
+
+        // Change Button color for better readability
+        button.classList.remove('btn-outline-light');
+        button.classList.add('btn-outline-dark');
+
+        // Save body's class to local storage for a cleaner flow
         localStorage.setItem('body', element.classList);
     }
 }
