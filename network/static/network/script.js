@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Get locally saved "body" content to use for setting darkmode (if enabled)
     let body = localStorage.getItem('body');
     document.querySelector("body").classList = body;
+    if (body === 'dark-mode') {
+        toggleButton.innerHTML = '<i class="bi bi-moon-fill"></i> Dark Mode';
+    } else {
+        toggleButton.innerHTML = '<i class="bi bi-sun-fill"></i> Light Mode';
+    }
 
     // Finding and utilizing Like Button
     for (let button of likeButtons) {
