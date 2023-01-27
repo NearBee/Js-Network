@@ -1,11 +1,18 @@
-body,
-body form {
-    background: #F5F5F5 !important;
+body {
+    background: #F5F5F5;
     /* color: #E5E5CB; */
+}
+
+form {
+    background: #F5F5F5;
 }
 
 body>nav {
     background: #66B067;
+}
+
+form {
+    background: #F5F5F5;
 }
 
 .card-header {
@@ -22,7 +29,7 @@ body>nav {
 
 .dark-mode,
 .dark-mode form {
-    background: #212529;
+    background: #212529 !important;
     color: lightgray;
 }
 
@@ -30,11 +37,6 @@ body>nav {
 .dark-mode .page-item.disabled {
     border: #444b53;
 }
-
-.dark-mode .page-item.disabled {
-    background: #2B3035;
-}
-
 
 .dark-mode .page-link {
     border: #555e68 !important;
