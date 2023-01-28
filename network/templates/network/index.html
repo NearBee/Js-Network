@@ -3,6 +3,11 @@
 {% load tz %}
 
 {% block body %}
+<div class="row justify-content-center pt-4">
+    <div class="col-auto border rounded-pill px-5 py-1 titleClass">
+        <p class="h4 fw-light mb-0">All Posts</p>
+    </div>
+</div>
 <div class="container pt-2">
     <div class="row justify-content-center">
         <div class="col-7">
@@ -55,7 +60,7 @@
                     <div class="row justify-content-center submitRow" style="display: none;">
                         <div class="col-auto w-75">
                             <button class="btn btn-outline-success btn-sm submitButton w-100"
-                                data-id="{{ post.id }}">Submit</button>
+                                data-id="{{ post.id }}">Save Edit</button>
                         </div>
                     </div>
 
