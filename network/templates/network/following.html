@@ -7,7 +7,11 @@
 {% block body %}
 
 {% if request.user == user %}
-
+<div class="row justify-content-center pt-4">
+    <div class="col-auto border rounded-pill px-5 py-1 titleClass">
+        <p class="h4 fw-light mb-0">Following</p>
+    </div>
+</div>
 <div class="container pt-2">
     <div class="row justify-content-center">
         <div class="col-7">
@@ -18,15 +22,7 @@
                     <a class="nav-link col-9 fs-5" href="{% url 'profile' post.user %}">
                         {{ post.user }}
                     </a>
-                    {% if request.user != post.user %}
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-outline-success btn-sm followButton"
-                            data-username="{{ username }}">
-                            {% if request.user not in post.user.followers.all %}Follow{% else %}Unfollow{% endif %}
-                        </button>
-                    </div>
                 </div>
-                {% endif %}
                 <div class="card-body">
                     <p class="card-text">{{ post }}</p>
                     <div class="row justify-content-between card-buttons">
