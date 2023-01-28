@@ -75,11 +75,10 @@ function like_button(id, currentLiker) {
         })
 
         .then((response => {
-            if (document.querySelector(`#post-${id} .likeButton`).textContent === "Like") {
-                document.querySelector(`#post-${id} .likeButton`).innerHTML = `Unlike`;
-
-            } else {
+            if (document.querySelector(`#post-${id} .likeButton`).innerHTML.trim() !== "Like") {
                 document.querySelector(`#post-${id} .likeButton`).innerHTML = `Like`;
+            } else {
+                document.querySelector(`#post-${id} .likeButton`).innerHTML = `Unlike`;
 
             }
         }))
@@ -102,7 +101,8 @@ function follow_button(username) {
                 .then(response => response.json())
                 .then(data => {
                     const followers = data.followers;
-                    document.querySelector(".follower_count").innerHTML = `Followers: ${followers}`;
+                    document.querySelector(".followerCount").innerHTML = `<p class="h6">Followers: ${followers}</p>`;
+                    console.log(followers)
                 })
 
                 .catch(error => {
@@ -112,7 +112,7 @@ function follow_button(username) {
 
         .then((response) => {
             // TODO: also inner html only changing AFTER the first instance rather than reading from page load
-            if (document.querySelector(".followButton").textContent === "Follow") {
+            if (document.querySelector(".followButton").innerHTML.trim() === "Follow") {
                 document.querySelector(".followButton").innerHTML = `Unfollow`;
 
             } else {
