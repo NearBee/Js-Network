@@ -73,13 +73,3 @@ form {
 .dark-mode .nav-link {
     color: lightgray !important;
 }
-
-.brandText {
-    font-size: 24px;
-    background: -webkit-linear-gradient(#7EB07F, #CBB26A, #7EB07F);
-    text-shadow: -2px -2px #363c42;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    /* color2: #CBB26A gradiant; */
-
-}
