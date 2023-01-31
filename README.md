@@ -1,5 +1,5 @@
 # Project 4 - Network
-### Brief Description:  [Video Demo WIP]
+### Brief Description:  [Video Demo](https://youtu.be/TJh0Yw5T5v8)
 In this project we were assigned the job of creating a social network with a slight similarity with twitter using primarily [Javascript](https://en.wikipedia.org/wiki/JavaScript), though there is a little bit of (premade) [Python](https://en.wikipedia.org/wiki/Python_(programming_language)), and [HTML](https://en.wikipedia.org/wiki/HTML).
 
 ---
