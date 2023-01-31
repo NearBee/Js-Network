@@ -30,9 +30,3 @@ When a user clicks the name of a post author in a post on any view (All posts, p
 From the navbar any logged in user is able to view a page that brings up all posts from users that the logged in user currently follows, there a user can like the post as well as go to the post author's profile page.
 
 ![Following Page](/network/README_imgs/Following_page.png)
-
-<br><br>
-
----
-
-This was a fun project that was a bit of a challenge, but I am glad I had the opportunity to do it! Thank you for reading my README!
